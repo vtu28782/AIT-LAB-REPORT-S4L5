@@ -1,0 +1,35 @@
+import math
+def minimax(depth, node_index, is_max, scores, alpha, beta, height):
+    if depth == height:
+        return scores[node_index]
+    if is_max:
+        best = float("-inf")
+        val = minimax(depth + 1, node_index * 2, False, scores, alpha, beta, height)
+        best = max(best, val)
+        alpha = max(alpha, best)
+        if beta <= alpha:
+            return best
+        val = minimax(depth + 1, node_index * 2 + 1, False, scores, alpha, beta, height)
+        best = max(best, val)
+        alpha = max(alpha, best)
+ return best
+    else:
+        best = float("inf")
+   1, node_index * 2, True, scores, alpha, beta, height)
+        best = min(best, val)
+        beta = min(beta, best)
+        if beta <= alpha:
+            return best
+        val = minimax(depth + 1, node_index * 2 + 1, True, scores, alpha, beta, height)
+        best = min(best, val)
+        beta = min(beta, best)
+    return best
+if _name_ == "_main_":
+    # Scores of the leaf nodes
+    scores = [3, 5, 6, 9, 1, 2, 0, -1]
+
+    # Calculate height of the tree
+    height = int(math.log(len(scores), 2))
+
+    print("Optimal value for player:", 
+          minimax(0, 0, True, scores, float("-inf"), float("inf"), height))
