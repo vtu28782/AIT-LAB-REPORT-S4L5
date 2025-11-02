@@ -1,50 +1,33 @@
-def is_safe(v, graph, color, c):
-    for i in range(len(graph)):
-        if graph[v][i] == 1 and color[i] == c:
+def print_solution(board):
+    N = len(board)
+    for row in board:
+        print(" ".join(str(cell) for cell in row))
+    print()
+def is_safe(board, row, col):
+    N = len(board)
+    for i in range(col):
+        if board[row][i]:
             return False
-    return True
-def graph_coloring_util(graph, m, color, v):
-    num_vertices = len(graph)
-    if v == num_vertices:
-        print("Solution exists with colors:", color)
+        if board[i][j]:
+            return False
+    for i, j in zip(range(row, N, 1), range(col, -1, -1)):
+        if board[i][j]:
+            return False
+return True
+def solve_nq_util(board, col):
+    N = len(board)
+ print_solution(board)
         return True
-  for c in range(1, m + 1):
-        if is_safe(v, graph, color, c):
-            color[v] = c
-            if graph_coloring_util(graph, m, color, v + 1):
-                return True
-            color[v] = 0
-    return False
-def solve_graph_coloring(graph, m):
-    num_vertices = len(graph)
-    color = [0] * num_vertices
-  if not graph_coloring_util(graph, m, color, 0):
-        print("No solution exists with", m, "colors")
+ res = False
+    for i in range(N):
+        if is_safe(board, i, col):
+            board[i][col] = 1
+ res = solve_nq_util(board, col + 1) or res
+  board[i][col] = 0 return res
+def solve_n_queens(N):
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    if not solve_nq_util(board, 0):
+        print("Solution does not exist")
         return False
     return True
-if _name_ == "_main_":
-    graph1 = [
-        [0, 1, 1, 1],
-        [1, 0, 1, 0],
-        [1, 1, 0, 1],
-        [1, 0, 1, 0]
-    ]
-  print("Graph 1 with 3 colors:")
-    solve_graph_coloring(graph1, 3)
-  print("\n" + "=" * 30 + "\n")
-   graph2 = [
-        [0, 1, 0, 1],
-        [1, 0, 1, 0],
-        [0, 1, 0, 1],
-        [1, 0, 1, 0]
-    ]
-  print("Graph 2 with 2 colors:")
-    solve_graph_coloring(graph2, 2)
-  print("\n" + "=" * 30 + "\n")
-  graph3 = [
-        [0, 1, 1],
-        [1, 0, 1],
-        [1, 1, 0]
-    ]
- print("Graph 3 with 2 colors:")
-    solve_graph_coloring(graph3, 2)
+solve_n_queens(4)
