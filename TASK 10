@@ -1,0 +1,22 @@
+facts = [
+    "john is cold",
+    "raining",
+    "john forgot his raincoat",
+    "fred lost his car keys",
+    "pete's foot hurts"
+]
+def verify_fact(fact):
+    fact = fact.strip().lower()
+  if fact == "john forgot his raincoat":
+        return True
+    elif fact == "foggy":
+        return True
+    elif fact == "cloudy":
+        return False
+    else:
+        return False
+for fact in facts
+    if verify_fact(fact):
+        print(f"{fact} - YES")
+    else:
+        print(f"{fact} - NO")
