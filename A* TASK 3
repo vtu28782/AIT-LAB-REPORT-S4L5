@@ -1,0 +1,49 @@
+import heapq
+graph = {
+    'A': {'B': 3, 'C': 6, 'D': 4},
+    'B': {'A': 3, 'C': 3},
+    'C': {'B': 3, 'D': 1},
+    'D': {'A': 4, 'C': 1}
+}
+heuristic = {
+    'A': 10,
+    'B': 8,
+    'C': 5,
+    'D': 0
+}
+def a_star(graph, start, goal, heuristic):
+    open_set = []
+    heapq.heappush(open_set, (0, start))
+    came_from = {start: None}
+    g_score = {start: 0}
+ while open_set:
+        _, current = heapq.heappop(open_set)
+  if current == goal:
+            path = []
+            while current:
+                path.append(current)
+                current = came_from[current]
+            path.reverse()
+            return path, g_score[goal]
+        for neighbour, cost in graph[current].items():
+            tentative_g = g_score[current] + cost
+ if neighbour not in g_score or tentative_g < g_score[neighbour]:
+                came_from[neighbour] = current
+                g_score[neighbour] = tentative_g
+                f_score = tentative_g + heuristic[neighbour]
+                heapq.heappush(open_set, (f_score, neighbour))
+ return None, float('inf')
+path, cost = a_star(graph, 'A', 'D', heuristic)
+print("Optimal path:", path)
+print("Total cost:", cost)
+print("\nNodes in the graph:")
+for node in graph.keys():
+    print(node)
+print("\nCost of every edge in the graph:")
+seen_edges = set()
+for node in graph:
+    for neighbour, weight in graph[node].items():
+        edge = tuple(sorted((node, neighbour)))
+        if edge not in seen_edges:
+            print(f"Edge {edge} -> Cost: {weight}")
+            seen_edges.add(edge)
